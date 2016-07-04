@@ -1,12 +1,10 @@
 package com.demo;
 
-import java.util.List;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
-import com.demo.mvc.component.PersonReturnValueHandler;
+import com.demo.mvc.component.MyWebBindingInitializer;
 
 @SpringBootApplication
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
@@ -26,8 +24,17 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 	// converters.add(new PersonHttpMessageConverter());
 	// }
 
+	// @Override
+	// protected void
+	// addReturnValueHandlers(List<HandlerMethodReturnValueHandler>
+	// returnValueHandlers) {
+	// returnValueHandlers.add(new PersonReturnValueHandler());
+	// }
+
 	@Override
-	protected void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers) {
-		returnValueHandlers.add(new PersonReturnValueHandler());
+	public RequestMappingHandlerAdapter requestMappingHandlerAdapter() {
+		RequestMappingHandlerAdapter adapter = super.requestMappingHandlerAdapter();
+		adapter.setWebBindingInitializer(new MyWebBindingInitializer());
+		return adapter;
 	}
 }
